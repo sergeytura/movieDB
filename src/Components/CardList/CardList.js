@@ -3,10 +3,21 @@ import Card from "../Card/Card";
 import './CardList.css'
 
 
-export default class CardList extends React.Component {
-    render () {
+function CardList ({movieData}){
+
+        const elements = movieData.map((item) => {
+            const {id, ...movieProps} = item
+            console.log(id)
+            return (
+                <Card key={id}
+                {...movieProps}
+                />
+            )
+        })
         return (
-            <Card/>
+            <ul className="card-list">{elements}</ul>    
         )
-    }
+
 }
+
+export default CardList

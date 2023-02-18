@@ -4,17 +4,24 @@ import './Card.css'
 
 export default class Card extends React.Component {
     render () {
+        const {header, movieDate, genres, overview, image} = this.props;
         return (
-            <div className="card">
-                <header className="card-title">Header</header>
-                <div className="card-release_date">Date</div>
-                <Genres />
-                <div className="card-overview">Info</div>
-                <div className="card-poster_path">Image</div>
+            <li className="card">
+                {/* <div className="card__img"> */}
+                <img className="card__img" src={image}/>
+                {/* </div> */}
+                <div className="card__info">
+                    <header className="card__title">{header}</header>
+                    <span className="card__release-date">{movieDate}</span>
+                    <Genres />
+                    <span className="card__overview">{overview}</span>
+                </div>
+                
+                
                 {/* <div className="card-vote_average">Stars</div>
                 <div>Rating</div> */}
                 
-            </div>
+            </li>
         )
     }
 }

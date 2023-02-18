@@ -1,4 +1,36 @@
+@font-face {
+    font-family: 'Inter Bold';
+    src: local('Inter Bold') url(/src/Fonts/Inter-Bold.ttf) format('ttf');
+  }
+
+@font-face {
+    font-family: 'Inter Regular';
+    src: local('Inter Regular') url(/src/Fonts/Inter-Regular.ttf) format('ttf');
+  }
+
 .card {
-    min-width: 300px;
-    height: 281px;
+    display: flex;
+    max-width: 454px;
+    max-height: 281px;
+    /* border: 1px solid black; */
+    overflow: hidden;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+    
+}
+
+.card__info {
+    margin: 20px;
+}
+
+.card__title {
+    font-family: 'Inter Bold';
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 28px;
+}
+
+.card__release-date {
+    font-family: 'Inter Regular';
+    font-size: 12px;
+    line-height: 22px;
 }
