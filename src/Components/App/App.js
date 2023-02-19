@@ -33,11 +33,9 @@ export default class App extends React.Component {
     this.movieService
     .getMovies(searchMovie)
     .then((movie) => {
-      // console.log(movie)
         (movie.results).map((item) => {
-          // const imgRegExp = /(null)/g;
-          // const {yyyy, mm, dd} = item.release_date
-        //  if(item.poster_path.match(imgRegExp)) item.poster_path = `https://cdn2.hexlet.io/store/derivatives/f5ccde05d8bd5997aa2c3be3c205594f/fill_webp-70-70.webp`
+          console.log(item)
+          if(item.poster_path == null) item.poster_path = '/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg'
           const newMovie = {
                 id: item.id,
                 header: item.title,

@@ -6,13 +6,4 @@ body {
   padding: 0;
   height: 100%;
   background-color: #F7F7F7;
-  font-family: 'Inter Regular';
-  font-size: 12px;
-  line-height: 22px;
 }
-
-
-/* @font-face {
-  font-family: 'Inter Regular';
-  src: local('Inter Regular') url(./Fonts/Inter-Regular.ttf) format('ttf');
-} */

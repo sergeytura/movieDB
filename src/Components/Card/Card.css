@@ -1,36 +1,43 @@
-@font-face {
-    font-family: 'Inter Bold';
-    src: local('Inter Bold') url(/src/Fonts/Inter-Bold.ttf) format('ttf');
-  }
-
-@font-face {
-    font-family: 'Inter Regular';
-    src: local('Inter Regular') url(/src/Fonts/Inter-Regular.ttf) format('ttf');
-  }
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
 .card {
     display: flex;
     max-width: 454px;
     max-height: 281px;
     /* border: 1px solid black; */
-    overflow: hidden;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+    /* overflow: hidden; */
+    
     
 }
 
 .card__info {
     margin: 20px;
+    font-family: 'Inter';
+    font-size: 12px;
+    line-height: 22px;
+    
 }
 
 .card__title {
-    font-family: 'Inter Bold';
+    font-family: 'Inter';
     font-size: 20px;
     font-weight: bold;
     line-height: 28px;
+    margin-bottom: 7px;
 }
 
 .card__release-date {
-    font-family: 'Inter Regular';
+    font-family: 'Inter';
     font-size: 12px;
     line-height: 22px;
+    margin-bottom: 10px;
+}
+
+.card__overview { 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical; 
 }

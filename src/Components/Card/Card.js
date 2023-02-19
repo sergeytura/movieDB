@@ -8,13 +8,13 @@ export default class Card extends React.Component {
         return (
             <li className="card">
                 {/* <div className="card__img"> */}
-                <img className="card__img" src={image}/>
+                <img className="card__img" src={image} alt='Movie Image'/>
                 {/* </div> */}
                 <div className="card__info">
                     <header className="card__title">{header}</header>
-                    <span className="card__release-date">{movieDate}</span>
+                    <div className="card__release-date">{movieDate}</div>
                     <Genres />
-                    <span className="card__overview">{overview}</span>
+                    <div className="card__overview">{overview}</div>
                 </div>
                 
                 
