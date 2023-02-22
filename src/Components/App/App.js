@@ -15,7 +15,7 @@ export default class App extends React.Component {
   movieService = new MovieService();
 
   state = {
-    value: 'fight',
+    value: '',
     genresDB: [],
     moviesData: [],
     loading: true,
@@ -24,14 +24,17 @@ export default class App extends React.Component {
   
   componentDidMount () {
     this.updateGenres()
-    // this.updateData(this.state.value)
-    // this.updateData(this.state.value)
-    this.debounce(this.state.value)
     this.setState({
       loading: false,
       error: false
     })
     
+  }
+
+  componentDidUpdate (prevState) {
+    if(this.state.value !== prevState.value) {
+      this.debounce(this.state.value)
+    }
   }
   
   debounce = lodash.debounce(this.updateData, 2000)
@@ -65,15 +68,22 @@ export default class App extends React.Component {
     .catch(this.onError);
     
   }
+
+  onChangeInput = (event) => {
+    console.log(event.target.value)
+    this.setState({
+      value: event.target.value
+    })
+  }
   
   render () {
-    const {loading, moviesData, error, genresDB} = this.state;
+    const {loading, moviesData, error, genresDB, value} = this.state;
     const spinner = loading ? <Spinner /> : null;
     const errorMessage =  error ? <ErrorIndicator /> : null;
     const hasData = !(loading || error)
     const content = hasData ? 
       <React.Fragment>
-      <SearchBar />
+      <SearchBar onChangeInput={this.onChangeInput} value={value}/>
       <CardList movieData={moviesData} genresDB={genresDB}/>
       <PaginationApp />
       </React.Fragment> 
@@ -81,20 +91,10 @@ export default class App extends React.Component {
     
     return (
       <div className='app'>
-        
-        {/* <div>FilterSearchRated</div>
-        <div>Search</div> */}
-        {/* <CardList movieData={this.movieData}/> */}
-        {/* <CardList movieData={this.state.allData}/> */}
         {content}
         {spinner}
         {errorMessage}
-        
-        
-        {/* <div>Pagination</div> */}
       </div>
-      
-      
     );
   }
 }
