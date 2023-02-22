@@ -9,9 +9,9 @@ export default function Genres  ({genres,genresDB}){
             })
         })
         
-        const movieGenres = elements.map(item => {
+        const movieGenres = elements.map((item,index) => {
             return (
-                <li>{item}</li>
+                <li key={index}>{item}</li>
             )
         })
 

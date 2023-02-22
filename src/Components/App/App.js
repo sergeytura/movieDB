@@ -4,6 +4,7 @@ import MovieService from '../../Services'
 import ErrorIndicator from '../ErrorIndicator';
 import Spinner from '../Spinner';
 import SearchBar from '../SearchBar';
+import PaginationApp from '../PaginationApp';
 import lodash from 'lodash'
 
 
@@ -14,7 +15,7 @@ export default class App extends React.Component {
   movieService = new MovieService();
 
   state = {
-    value: 'fight club',
+    value: 'fight',
     genresDB: [],
     moviesData: [],
     loading: true,
@@ -33,7 +34,7 @@ export default class App extends React.Component {
     
   }
   
-  debounce = lodash.debounce(this.updateData, 1000)
+  debounce = lodash.debounce(this.updateData, 2000)
 
   onError = (err) => {
      
@@ -74,6 +75,7 @@ export default class App extends React.Component {
       <React.Fragment>
       <SearchBar />
       <CardList movieData={moviesData} genresDB={genresDB}/>
+      <PaginationApp />
       </React.Fragment> 
       : null;
     
