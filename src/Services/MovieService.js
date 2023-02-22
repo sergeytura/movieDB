@@ -1,15 +1,10 @@
 
+
 export default class MovieService {
     _basePoster = `https://image.tmdb.org/t/p/original`
     _myKey = `?api_key=6db7ab44767f1de8e415a7e1e11f735a`
     _baseURL = `https://api.themoviedb.org/3`
-    fake = `https://api.themoviedb.org/3/movie/500?api_key=6db7ab44767f1de8e415a7e1e11f735a&language=en-US`
-    
-    // getResource = async () => {
-    //     const res = await fetch(`${this._baseURL}/search/movie${this._myKey}&language=en-US&query=return&page=1&include_adult=false`)
-    //     const body = await res.json();
-    //     return body
-    // }
+ 
     async getResource(url) {
         const res = await fetch(`${this._baseURL}${url}`);
 
@@ -20,18 +15,36 @@ export default class MovieService {
     }
 
     getMovies (movie) {
-        const res = this.getResource(`/search/movie${this._myKey}&language=en-US&query=${movie}&page=1&include_adult=false`)
-        return res
+        return this.getResource(`/search/movie${this._myKey}&language=en-US&query=${movie}&page=1&include_adult=false`)
     }
 
-    async getImage (imageUrl) {
-        const res = await fetch(`${this._basePoster}${imageUrl}`)
-        return res
+    getGenres () {
+        return this.getResource(`/genre/movie/list${this._myKey}&language=en-US`)
     }
-}
+    
+    currentMovies(movies) {
+        return this.getMovies(movies).then(res => {
+                 
+                return (res.results).map((item) => {
+                    console.log()
+                    // if(item.poster_path == null) item.poster_path = '/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg'
+                    const newMovieObj = {
+                        id: item.id,
+                        header: item.title,
+                        movieDate: item.release_date,
+                        // movieDate: format(new Date(1992, 2, 1), 'MMMM dd, yyyy'),
+                        // movieDate: new Date(`${item.release_date}`), (item.release_date).replace(/-/g,',')
+                        genres: item.genre_ids,
+                        overview: item.overview,
+                        image: `https://image.tmdb.org/t/p/w200${item.poster_path}`,
+                        // image: this.getImage(item.poster_path),
+                        stars: (item.vote_average).toFixed(1),
+                        popularity: item.popularity
+                    }
+                    return newMovieObj 
+            })
+        })
+    }
 
-const movies = new MovieService();
-
-// movies.getMovies('fight club').then((b) => console.log(b.results))
-
-// movies.getPoster(`/lBENxZ1nmHXkTKV0AJu1agnW8Mg.jpg`).then((b) => console.log(b))
+    
+} 
