@@ -15,6 +15,7 @@ export default class App extends React.Component {
   movieService = new MovieService();
 
   state = {
+    page: 1,
     value: '',
     genresDB: [],
     moviesData: [],
@@ -33,16 +34,22 @@ export default class App extends React.Component {
 
   componentDidUpdate (prevState) {
     if(this.state.value !== prevState.value) {
-      this.debounce(this.state.value)
+      this.debounce(this.state.value, this.state.page)
     }
   }
+
   
   debounce = lodash.debounce(this.updateData, 2000)
 
+ 
+  // onWarning = (warn) => {
+  //   console.log(warn)
+  // }
+
   onError = (err) => {
-     
+     console.log(err)
     this.setState({
-      error: true,
+      error: false,
       loading: false
     })
   }
@@ -57,9 +64,9 @@ export default class App extends React.Component {
     })
   }
 
-  updateData(searchMovie) {
+  updateData(searchMovie, currentPage) {
     this.movieService
-    .currentMovies(searchMovie)
+    .currentMovies(searchMovie, currentPage)
     .then(newMovies => 
       this.setState({
       moviesData: newMovies
@@ -70,22 +77,28 @@ export default class App extends React.Component {
   }
 
   onChangeInput = (event) => {
-    console.log(event.target.value)
     this.setState({
-      value: event.target.value
+      value: event.target.value,
+      page: 1
+    })
+  }
+
+  currentPage = (event) => {
+    this.setState({
+      page: event
     })
   }
   
   render () {
-    const {loading, moviesData, error, genresDB, value} = this.state;
+    const {loading, moviesData, error, genresDB, page } = this.state;
     const spinner = loading ? <Spinner /> : null;
     const errorMessage =  error ? <ErrorIndicator /> : null;
     const hasData = !(loading || error)
     const content = hasData ? 
       <React.Fragment>
-      <SearchBar onChangeInput={this.onChangeInput} value={value}/>
+      <SearchBar onChangeInput={this.onChangeInput}  />
       <CardList movieData={moviesData} genresDB={genresDB}/>
-      <PaginationApp />
+      <PaginationApp currentPage={this.currentPage} page={page}/>
       </React.Fragment> 
       : null;
     

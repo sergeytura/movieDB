@@ -6,8 +6,10 @@ import './Card.css'
 import icon from './nofoto.jpg'
 
 export default class Card extends React.Component {
+
     render () {
         const {header, movieDate, genres, overview, image, stars, genresDB} = this.props;
+        
         let sourceIMG = (image === 'https://image.tmdb.org/t/p/w200null') ?  icon : image
         return (
             <li className="card">

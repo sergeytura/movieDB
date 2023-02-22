@@ -14,16 +14,16 @@ export default class MovieService {
         return await res.json()
     }
 
-    getMovies (movie) {
-        return this.getResource(`/search/movie${this._myKey}&language=en-US&query=${movie}&page=1&include_adult=false`)
+    getMovies (movie,page) {
+        return this.getResource(`/search/movie${this._myKey}&language=en-US&query=${movie}&page=${page}&include_adult=false`)
     }
 
     getGenres () {
         return this.getResource(`/genre/movie/list${this._myKey}&language=en-US`)
     }
     
-    currentMovies(movies) {
-        return this.getMovies(movies).then(res => {
+    currentMovies(movies, currPage) {
+        return this.getMovies(movies, currPage).then(res => {
                  
                 return (res.results).map((item) => {
                     console.log()

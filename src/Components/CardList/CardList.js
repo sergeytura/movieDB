@@ -1,18 +1,18 @@
 import React from "react";
 import Card from "../Card/Card";
+
 import './CardList.css'
 
 
 function CardList ({movieData,genresDB}){
-
         const elements = movieData.map((item) => {
             const {id, ...movieProps} = item
-            // console.log(id)
+             
             return (
-                <Card key={id}
-                {...movieProps}
-                genresDB={genresDB}
-                />
+                    <Card key={id}
+                    {...movieProps}
+                    genresDB={genresDB}
+                    />
             )
         })
         return (
