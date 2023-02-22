@@ -3,6 +3,9 @@ import CardList from '../CardList/CardList'
 import MovieService from '../../Services'
 import ErrorIndicator from '../ErrorIndicator';
 import Spinner from '../Spinner';
+import SearchBar from '../SearchBar';
+import lodash from 'lodash'
+
 
 import './App.css'
 
@@ -11,6 +14,7 @@ export default class App extends React.Component {
   movieService = new MovieService();
 
   state = {
+    value: 'fight club',
     genresDB: [],
     moviesData: [],
     loading: true,
@@ -19,7 +23,9 @@ export default class App extends React.Component {
   
   componentDidMount () {
     this.updateGenres()
-    this.updateData('fight ')
+    // this.updateData(this.state.value)
+    // this.updateData(this.state.value)
+    this.debounce(this.state.value)
     this.setState({
       loading: false,
       error: false
@@ -27,6 +33,8 @@ export default class App extends React.Component {
     
   }
   
+  debounce = lodash.debounce(this.updateData, 1000)
+
   onError = (err) => {
      
     this.setState({
@@ -62,7 +70,12 @@ export default class App extends React.Component {
     const spinner = loading ? <Spinner /> : null;
     const errorMessage =  error ? <ErrorIndicator /> : null;
     const hasData = !(loading || error)
-    const content = hasData ? <CardList movieData={moviesData} genresDB={genresDB}/> : null;
+    const content = hasData ? 
+      <React.Fragment>
+      <SearchBar />
+      <CardList movieData={moviesData} genresDB={genresDB}/>
+      </React.Fragment> 
+      : null;
     
     return (
       <div className='app'>
