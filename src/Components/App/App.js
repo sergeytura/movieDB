@@ -55,6 +55,7 @@ export default class App extends React.Component {
   }
 
    updateGenres() {
+    if(this.state.value === '') return
      this.movieService
     .getGenres()
     .then(res => {
@@ -94,11 +95,13 @@ export default class App extends React.Component {
     const spinner = loading ? <Spinner /> : null;
     const errorMessage =  error ? <ErrorIndicator /> : null;
     const hasData = !(loading || error)
+    const paginatonOn = (this.state.moviesData.length) > 0 ? <PaginationApp /> : null;
     const content = hasData ? 
       <React.Fragment>
       <SearchBar onChangeInput={this.onChangeInput}  />
       <CardList movieData={moviesData} genresDB={genresDB}/>
-      <PaginationApp currentPage={this.currentPage} page={page}/>
+      {/* <PaginationApp currentPage={this.currentPage} page={page}/>*/}
+      {paginatonOn}
       </React.Fragment> 
       : null;
     
