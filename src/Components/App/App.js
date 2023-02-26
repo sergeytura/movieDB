@@ -6,6 +6,7 @@ import Spinner from '../Spinner';
 import SearchBar from '../SearchBar';
 import PaginationApp from '../PaginationApp';
 import lodash from 'lodash'
+import { Tabs } from 'antd'
 
 
 import './App.css'
@@ -24,6 +25,7 @@ export default class App extends React.Component {
   }
   
   componentDidMount () {
+    this.movieService.createGuestSession()
     this.updateGenres()
     this.setState({
       loading: false,
@@ -91,23 +93,41 @@ export default class App extends React.Component {
   }
   
   render () {
+
     const {loading, moviesData, error, genresDB, page } = this.state;
     const spinner = loading ? <Spinner /> : null;
     const errorMessage =  error ? <ErrorIndicator /> : null;
     const hasData = !(loading || error)
     const paginatonOn = (this.state.moviesData.length) > 0 ? <PaginationApp /> : null;
-    const content = hasData ? 
-      <React.Fragment>
+    // const content = hasData ? 
+    //   <React.Fragment>
+    //   <SearchBar onChangeInput={this.onChangeInput}  />
+    //   <CardList movieData={moviesData} genresDB={genresDB}/>
+    //   {/* <PaginationApp currentPage={this.currentPage} page={page}/>*/}
+    //   {paginatonOn}
+    //   </React.Fragment> 
+    //   : null;
+    const items = [
+    {
+      key: '1',
+      label: `Search`,
+      children: <React.Fragment>
       <SearchBar onChangeInput={this.onChangeInput}  />
       <CardList movieData={moviesData} genresDB={genresDB}/>
       {/* <PaginationApp currentPage={this.currentPage} page={page}/>*/}
       {paginatonOn}
-      </React.Fragment> 
-      : null;
-    
+      </React.Fragment> ,
+    },
+    {
+      key: '2',
+      label: `Rated`,
+      children: `Content of Tab Pane 2`,
+    },
+  ];
     return (
       <div className='app'>
-        {content}
+        <Tabs defaultActiveKey="1" centered items={items}  />
+        {/* {content} */}
         {spinner}
         {errorMessage}
       </div>

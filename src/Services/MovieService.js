@@ -22,12 +22,13 @@ export default class MovieService {
         return this.getResource(`/genre/movie/list${this._myKey}&language=en-US`)
     }
 
-    getRatedMovies () {
-        return this.getResource(`/guest_session/${guest_session_id}/rated/movies`)
-    }
+    // getRatedMovies () {
+    //     return this.getResource(`/guest_session/${guest_session_id}/rated/movies`)
+    // }
     
     createGuestSession () {
-        return this.getResource(`/authentication/guest_session/new&${this._myKey}`)
+        console.log('session Guest created!')
+        return this.getResource(`/authentication/guest_session/new${this._myKey}`)
     }
 
     currentMovies(movies, currPage) {
