@@ -1,17 +1,22 @@
-
-
 export default class MovieService {
     _basePoster = `https://image.tmdb.org/t/p/original`
     _myKey = `?api_key=6db7ab44767f1de8e415a7e1e11f735a`
     _baseURL = `https://api.themoviedb.org/3`
+    _sessionId
  
     async getResource(url) {
-        const res = await fetch(`${this._baseURL}${url}`);
+        try {
+            const res = await fetch(`${this._baseURL}${url}`);
 
-        if(!res.ok) {
-            throw new Error(`Cant fetch ${url}, received ${res.status}`)
+            if(!res.ok) {
+                throw new Error(`Cant fetch ${url}, received ${res.status}`)
+            }
+            return await res.json()
         }
-        return await res.json()
+        catch (err) {
+            console.log(err)
+        }
+        
     }
 
     getMovies (movie,page) {
@@ -27,9 +32,28 @@ export default class MovieService {
     // }
     
     createGuestSession () {
+       
         console.log('session Guest created!')
         return this.getResource(`/authentication/guest_session/new${this._myKey}`)
+                // .then(e =>  this._sessionId = e.guest_session_id )
+                .then(e => {
+                    console.log(e.guest_session_id)
+                    this._sessionId = e.guest_session_id
+                })
     }
+
+    // getRatedMovies () {
+    //     console.log('get rated movies')
+    //     return this.getResource(`/guest_session/${this._sessionId}/rated/movies`)
+    //             .then(e => console.log(e))
+                
+    // }
+
+    // testRated() {
+    //     return this.getResource('/account/d9ac5e940a3bd55a881f2ce994820b11/rated/movies?api_key=6db7ab44767f1de8e415a7e1e11f735a&language=en-US&sort_by=created_at.asc&page=1')
+    //             .then(e => console.log(e))
+    //             .catch(err => console.log(err))
+    // }
 
     currentMovies(movies, currPage) {
         return this.getMovies(movies, currPage).then(res => {

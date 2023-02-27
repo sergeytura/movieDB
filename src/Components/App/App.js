@@ -20,17 +20,19 @@ export default class App extends React.Component {
     value: '',
     genresDB: [],
     moviesData: [],
-    loading: true,
+    loading: false,
     error: false
   }
+
+  
   
   componentDidMount () {
     this.movieService.createGuestSession()
     this.updateGenres()
-    this.setState({
-      loading: false,
-      error: false
-    })
+    // this.setState({
+    //   loading: false,
+    //   error: false
+    // })
     
   }
 
@@ -49,9 +51,8 @@ export default class App extends React.Component {
   // }
 
   onError = (err) => {
-     console.log(err)
     this.setState({
-      error: false,
+      error: true,
       loading: false
     })
   }
@@ -65,6 +66,7 @@ export default class App extends React.Component {
         genresDB: res.genres
       })
     })
+    .catch(this.onError);
   }
 
   updateData(searchMovie, currentPage) {
@@ -72,7 +74,8 @@ export default class App extends React.Component {
     .currentMovies(searchMovie, currentPage)
     .then(newMovies => 
       this.setState({
-      moviesData: newMovies
+      moviesData: newMovies,
+      loading: false
       })
     )
     .catch(this.onError);
@@ -82,7 +85,8 @@ export default class App extends React.Component {
   onChangeInput = (event) => {
     this.setState({
       value: event.target.value,
-      page: 1
+      page: 1,
+      loading: true
     })
   }
 
@@ -91,14 +95,51 @@ export default class App extends React.Component {
       page: event
     })
   }
+
+  // showRated = () => {
+  //   this.movieService.getRatedMovies().then(e => console.log(e))
+  // }
+  
+  setRating = (id, name) => {
+    console.log(id, name)
+  }
   
   render () {
-
+    // console.log(this.showRated())
+    
     const {loading, moviesData, error, genresDB, page } = this.state;
     const spinner = loading ? <Spinner /> : null;
     const errorMessage =  error ? <ErrorIndicator /> : null;
-    const hasData = !(loading || error)
-    const paginatonOn = (this.state.moviesData.length) > 0 ? <PaginationApp /> : null;
+    // const hasData = !(loading || error)
+    const hasData = !error
+    const paginatonOn = (this.state.moviesData.length) > 0 ? <PaginationApp currentPage={this.currentPage} page={page}/> : null;
+
+    const items = [
+      {
+        key: '1',
+        label: `Search`,
+        children: 
+        <React.Fragment>
+        <SearchBar onChangeInput={this.onChangeInput}  />
+        
+        <CardList 
+        movieData={moviesData} 
+        genresDB={genresDB}
+        setRating={this.setRating}
+        loading={loading}
+        error={error}
+        />
+        {paginatonOn}
+        </React.Fragment> ,
+      },
+      {
+        key: '2',
+        label: `Rated`,
+        children: `Content of Tab Pane 2`,
+      },
+    ];
+    // console.log(loading)
+    const content = hasData ? <Tabs defaultActiveKey="1" centered items={items}  /> : null;
     // const content = hasData ? 
     //   <React.Fragment>
     //   <SearchBar onChangeInput={this.onChangeInput}  />
@@ -107,30 +148,16 @@ export default class App extends React.Component {
     //   {paginatonOn}
     //   </React.Fragment> 
     //   : null;
-    const items = [
-    {
-      key: '1',
-      label: `Search`,
-      children: <React.Fragment>
-      <SearchBar onChangeInput={this.onChangeInput}  />
-      <CardList movieData={moviesData} genresDB={genresDB}/>
-      {/* <PaginationApp currentPage={this.currentPage} page={page}/>*/}
-      {paginatonOn}
-      </React.Fragment> ,
-    },
-    {
-      key: '2',
-      label: `Rated`,
-      children: `Content of Tab Pane 2`,
-    },
-  ];
+    
     return (
+      <React.Fragment>
+      
       <div className='app'>
-        <Tabs defaultActiveKey="1" centered items={items}  />
-        {/* {content} */}
+        {content}
         {spinner}
         {errorMessage}
       </div>
-    );
-  }
+      </React.Fragment>
+      );
+    }
 }
