@@ -4,7 +4,7 @@
     display: flex;
     position: relative;
     width: 454px;
-    max-height: 281px;
+    height: 281px;
     /* border: 1px solid black; */
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
     /* overflow: hidden; */
@@ -12,11 +12,18 @@
     
 }
 
+.card__img {
+    /* height: 222px; */
+    width: 213px;
+}
+
 .card__info {
     margin: 20px;
     font-family: 'Inter';
     font-size: 12px;
     line-height: 22px;
+    max-width: 241px;
+    
 }
 
 .card__title {
@@ -88,4 +95,20 @@
 
 .border-сolor-green {
     border: 2px solid #66E900
+}
+
+.сolor-red {
+    color: #E90000
+}
+
+.сolor-orange {
+    color: #E97E00
+}
+
+.сolor-yellow {
+    color: #E9D100
+}
+
+.сolor-green {
+    color: #66E900
 }

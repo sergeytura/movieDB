@@ -1,2 +1,2 @@
-import Rating from "./Rating";
-export default Rating;
+// import Rating from "./Rating";
+// export default Rating;
