@@ -2,7 +2,7 @@ export default class MovieService {
     _basePoster = `https://image.tmdb.org/t/p/original`
     _myKey = `?api_key=6db7ab44767f1de8e415a7e1e11f735a`
     _baseURL = `https://api.themoviedb.org/3`
-    _sessionId  
+    _sessionId
  
     async getResource(url) {
         try {
@@ -25,26 +25,27 @@ export default class MovieService {
 
     getGenres () {
         return this.getResource(`/genre/movie/list${this._myKey}&language=en-US`)
-    }
-
-    // getRatedMovies () {
-    //     return this.getResource(`/guest_session/${guest_session_id}/rated/movies`)
-    // }
+    } 
     
-    createGuestSession () {
-        
+    createGuestSession () { 
+        if(localStorage.sessionId !== '') {
+            return this._sessionId = localStorage.sessionId 
+        }
         console.log('session Guest created!')
         return this.getResource(`/authentication/guest_session/new${this._myKey}`)
-                // .then(e =>  this._sessionId = e.guest_session_id )
                 .then(e => {
-                    console.log(e.guest_session_id)
-                    this._sessionId = e.guest_session_id
+                    localStorage.setItem('sessionId', e.guest_session_id)
+                     
+                    this._sessionId = localStorage.sessionId
+                    console.log(this._sessionId)
+                    
                 })
         
         
-    }
+    } 
 
     sendRatingMovie (value, idRating) {
+        console.log(this._sessionId)
         fetch(`${this._baseURL}/movie/${idRating}/rating${this._myKey}&guest_session_id=${this._sessionId}`, {
             method: 'POST',
             headers: {
@@ -54,13 +55,7 @@ export default class MovieService {
                 "value": value
               })
           });
-    } 
-
-    // getRatedMovies () {
-    //     console.log('get rated movies')
-    //     this.getResource(`/guest_session/${this._sessionId}/rated/movies${this._myKey}&language=en-US&sort_by=created_at.asc`)
-    //             .then(e => console.log(e)) 
-    // }
+    }  
 
     async getRatedMovies () {
         const res = await fetch(`https://api.themoviedb.org/3/guest_session/${this._sessionId}/rated/movies?api_key=6db7ab44767f1de8e415a7e1e11f735a&language=en-US&sort_by=created_at.asc`)
@@ -68,10 +63,8 @@ export default class MovieService {
     }
 
     ratedMovies () {
-        return this.getRatedMovies().then(res => {
-                //  console.log(res )
-            return (res.results).map((item) => {
-                console.log(item)
+        return this.getRatedMovies().then(res => { 
+            return (res.results).map((item) => { 
                 const newRatedObj = {
                     id: item.id,
                     idRating: item.id,
@@ -83,45 +76,31 @@ export default class MovieService {
                     image: `https://image.tmdb.org/t/p/w200${item.poster_path}`,
                     stars: (item.vote_average).toFixed(1),
                     popularity: item.popularity
-                }
-                console.log(newRatedObj)
+                } 
                 return newRatedObj 
             })
         })
         
-    }
-
-    // testRated() {
-    //     return this.getResource('/account/d9ac5e940a3bd55a881f2ce994820b11/rated/movies?api_key=6db7ab44767f1de8e415a7e1e11f735a&language=en-US&sort_by=created_at.asc&page=1')
-    //             .then(e => console.log(e))
-    //             .catch(err => console.log(err))
-    // }
+    } 
 
     currentMovies(movies, currPage) {
         return this.getMovies(movies, currPage).then(res => {
                  
-                return (res.results).map((item) => {
-                    
-                    // if(item.poster_path == null) item.poster_path = '/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg'
+                return (res.results).map((item) => { 
                     const newMovieObj = {
                         id: item.id,
                         idRating: item.id,
                         header: item.title,
                         movieDate: item.release_date,
-                        // movieDate: format(new Date(1992, 2, 1), 'MMMM dd, yyyy'),
-                        // movieDate: new Date(`${item.release_date}`), (item.release_date).replace(/-/g,',')
                         genres: item.genre_ids,
                         overview: item.overview,
                         rating: '',
                         image: `https://image.tmdb.org/t/p/w200${item.poster_path}`,
-                        // image: this.getImage(item.poster_path),
                         stars: (item.vote_average).toFixed(1),
                         popularity: item.popularity
                     }
                     return newMovieObj 
             })
         })
-    }
-
-    
+    } 
 } 

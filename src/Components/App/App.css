@@ -5,3 +5,9 @@
   background-color: white;
   min-height: 100%;
 }
+
+.app__spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}

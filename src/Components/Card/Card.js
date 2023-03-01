@@ -10,32 +10,13 @@ import ErrorIndicator from "../ErrorIndicator";
 
 export default class Card extends React.Component {
 
-    // componentDidMount () {
-    //     this.setState({
-    //         loading: false,
-    //         error: false
-    //     })
-    // }
-
-    // componentDidUpdate () {
-    //     this.setState({
-    //         loading: true,
-    //         error: false
-    //     })
-    // }
-
-    // componentDidCatch () {
-    //     this.setState({
-    //         loading: false,
-    //         error: true
-    //     })
-        
-    // }
-
+    state = {
+        imgLoading: true
+    }
+ 
     render () {
-        const {idRating,rating, error, loading, setRating, header, movieDate, genres, overview, image, stars, genresDB} = this.props;
-        // const {loading,error} = this.state;
-        
+        const {idRating, rating, error, setRating, header, movieDate, genres, overview, image, stars, genresDB} = this.props;
+        const {imgLoading} = this.state
         const sourceIMG = (image === 'https://image.tmdb.org/t/p/w200null') ?  icon : image
 
         let ClassNameStars = "card__stars"
@@ -49,24 +30,31 @@ export default class Card extends React.Component {
         if(rating >= 3  && rating < 5) colorRatedStars = "сolor-orange"
         if(rating >= 5  && rating < 7) colorRatedStars = "сolor-yellow"
         if(rating >= 7) colorRatedStars = "сolor-green"
-            
-        const spinner = loading ? <Spinner /> : null;
-        const errorMessage =  error ? <ErrorIndicator /> : null;
-        // const hasData = !(loading || error)
-        const hasData = !error
-        const content = hasData ? 
+
+        if(imgLoading) {
+            let img = new Image();
+            img.src = sourceIMG;
+            img.onload = () => {
+                this.setState({
+                    imgLoading: false
+                })
+            }
+        }
+        const showImg = !imgLoading ? <img src={sourceIMG} alt="poster" loading={'lazy'} /> : <Spinner />;
+        const errorMessage =  error ? <ErrorIndicator /> : null; 
+        const content = !error ?
         <React.Fragment>
             
             <li className="card" >
                  
-                {loading ? <div className="card__img">{spinner}</div> : <img src={sourceIMG}  alt='poster'/>}
+                <div className="card__img">{showImg}</div>
                 <div className="card__info">
                     <header className="card__title">{header}</header>
                     <div className="card__release-date">{movieDate ? format(new Date(movieDate), 'MMMM d, yyyy') : movieDate}</div>
                     <Genres genres={genres} genresDB={genresDB}/>
                     <div className="card__overview">{overview}</div>
                     <div className={ClassNameStars}>{stars}</div>
-                    {/* <Rating setRating={setRating}/> */}
+                   
                     <div className="card__rating"  >
                         <Rate className={colorRatedStars}
                         value={rating}
@@ -85,8 +73,7 @@ export default class Card extends React.Component {
         return (
             <React.Fragment>
                 {content}
-                {errorMessage}
-                
+                {errorMessage} 
             </React.Fragment>
         )
     }
