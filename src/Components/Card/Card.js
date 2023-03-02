@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Genres from "../Genres";
 // import Rating from "../Rating";
 import { Rate } from "antd";
@@ -7,6 +7,7 @@ import './Card.css'
 import icon from './nofoto.jpg'
 import Spinner from "../Spinner";
 import ErrorIndicator from "../ErrorIndicator";
+import { GenresContext } from "../GenresContext/GenresContext";
 
 export default class Card extends React.Component {
 
@@ -14,8 +15,8 @@ export default class Card extends React.Component {
         imgLoading: true
     }
  
-    render () {
-        const {idRating, rating, error, setRating, header, movieDate, genres, overview, image, stars, genresDB} = this.props;
+    render () { 
+        const {idRating, rating, error, setRating, header, movieDate, genres, overview, image, stars} = this.props;
         const {imgLoading} = this.state
         const sourceIMG = (image === 'https://image.tmdb.org/t/p/w200null') ?  icon : image
 
@@ -51,7 +52,11 @@ export default class Card extends React.Component {
                 <div className="card__info">
                     <header className="card__title">{header}</header>
                     <div className="card__release-date">{movieDate ? format(new Date(movieDate), 'MMMM d, yyyy') : movieDate}</div>
-                    <Genres genres={genres} genresDB={genresDB}/>
+                    <GenresContext.Consumer>
+                    {
+                        genresDB => <Genres genres={genres} genresDB={genresDB}/>
+                    }
+                    </GenresContext.Consumer>
                     <div className="card__overview">{overview}</div>
                     <div className={ClassNameStars}>{stars}</div>
                    

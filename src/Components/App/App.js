@@ -1,12 +1,12 @@
 import React from 'react';
 import CardList from '../CardList/CardList'
 import MovieService from '../../Services'
-import ErrorIndicator from '../ErrorIndicator';
-// import Spinner from '../Spinner';
+import ErrorIndicator from '../ErrorIndicator'; 
 import SearchBar from '../SearchBar';
 import PaginationApp from '../PaginationApp';
 import lodash from 'lodash'
 import { Tabs } from 'antd'
+import { GenresContext } from '../GenresContext/GenresContext';
 
 
 import './App.css'
@@ -97,7 +97,7 @@ export default class App extends React.Component {
     .then(newMovies => 
       this.setState({
       moviesData: newMovies,
-      loading: false
+      loading: false 
       })
     )
     .catch(this.onError); 
@@ -133,7 +133,6 @@ export default class App extends React.Component {
 
   render () {  
     const {loading, moviesData, moviesRatedData, error, genresDB, page } = this.state;
-    // const spinner = loading ?   <Spinner />   : null;
     const errorMessage =  error ? <ErrorIndicator /> : null; 
     const paginatonOn = (this.state.moviesData.length) > 0 ? <PaginationApp currentPage={this.currentPage} page={page}/> : null;
     const items = [
@@ -141,33 +140,34 @@ export default class App extends React.Component {
         key: '1',
         label: `Search`,
         children: 
+        <GenresContext.Provider value={genresDB}> 
         <React.Fragment>
-        <SearchBar onChangeInput={this.onChangeInput}  />
-        
+        <SearchBar onChangeInput={this.onChangeInput}  /> 
         <CardList 
         movieData={moviesData} 
-        genresDB={genresDB}
         setRating={this.setRating}
         loading={loading}
         error={error}
         />
         {paginatonOn}
-        </React.Fragment> ,
+        </React.Fragment>
+        </GenresContext.Provider> ,
       },
       {
         key: '2',
         label: `Rated`,
         children: 
+        <GenresContext.Provider value={genresDB}>
         <React.Fragment>
         <CardList 
         movieData={moviesRatedData} 
-        genresDB={genresDB}
         setRating={this.setRating}
         loading={loading}
         error={error}
         />
         {paginatonOn}
-        </React.Fragment>,
+        </React.Fragment>
+        </GenresContext.Provider>,
       },
     ]; 
     const content = !error ? <Tabs 
@@ -177,8 +177,7 @@ export default class App extends React.Component {
       <React.Fragment>
       
       <div className='app'>
-          {content}
-          {/* {spinner} */}
+          {content} 
           {errorMessage}
       </div>
       </React.Fragment>
