@@ -10,16 +10,12 @@ export default function ErrorIndicator () {
           <Space 
         // direction="vertical"
         style={{
-          // width: '100%',
+          width: '100%',
         }}
         >
-          <Alert
-            
-            message="Are you from Russia!? Use Psiphon 3 - its free and fast"
+          <Alert   message="Are you from Russia!? Use Psiphon 3 - its free and fast"
             type="error"
-            showIcon
-            
-          />
+            showIcon  />
           
         </Space>
         

@@ -1,2 +1,3 @@
-import Genres from "./Genres";
-export default Genres
+import Genres from './Genres';
+
+export default Genres;

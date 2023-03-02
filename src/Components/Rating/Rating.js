@@ -5,7 +5,7 @@
 //     return (
 //         <div className="card__rating" onClick={setRating}>
 //             <Rate
-            
+
 //             style={{
 //                 fontSize: '14px',
 //             }}

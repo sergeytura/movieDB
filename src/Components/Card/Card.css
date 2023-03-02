@@ -1,115 +1,114 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
 .card {
-    display: flex;
-    position: relative;
-    width: 454px;
-    height: 281px; 
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);  
+  display: flex;
+  position: relative;
+  width: 454px;
+  height: 281px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .card__img {
-    display: flex; 
-    height: 100%;
-    width: 173px;
+  display: flex;
+  height: 100%;
+  width: 173px;
 }
 
-.card__img > img{
-    display:block;
-    width:100%;
-    max-width:100%;
-    height:auto;
+.card__img > img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 
 .card__info {
-    margin: 20px;
-    font-family: 'Inter';
-    font-size: 12px;
-    line-height: 22px;
-    max-width: 241px; 
+  margin: 20px;
+  font-family: 'Inter';
+  font-size: 12px;
+  line-height: 22px;
+  max-width: 241px;
 }
 
 .card__title {
-    font-family: 'Inter';
-    font-size: 20px;
-    font-weight: bold;
-    line-height: 28px;
-    margin-bottom: 7px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical; 
+  font-family: 'Inter';
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 28px;
+  margin-bottom: 7px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .card__release-date {
-    font-family: 'Inter';
-    font-size: 12px;
-    line-height: 22px;
-    margin-bottom: 10px;
-    color: #827E7E
+  font-family: 'Inter';
+  font-size: 12px;
+  line-height: 22px;
+  margin-bottom: 10px;
+  color: #827e7e;
 }
 
-.card__overview { 
-    
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical; 
-    font-family: "Inter";
-    font-weight: bold;
+.card__overview {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  font-family: 'Inter';
+  font-weight: bold;
 }
 
 .card__stars {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 23px;
-    text-align: center;
-    font-size: 11px;
-    font-family: 'Inter';
-    font-weight: bold;
-    display: inline-block; 
-    border-radius: 50%; 
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 23px;
+  text-align: center;
+  font-size: 11px;
+  font-family: 'Inter';
+  font-weight: bold;
+  display: inline-block;
+  border-radius: 50%;
 }
 
 .card__rating {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    bottom: 15px;
-    margin-top: auto;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  bottom: 15px;
+  margin-top: auto;
 }
 
 .border-сolor-red {
-    border: 2px solid #E90000
+  border: 2px solid #e90000;
 }
 
 .border-сolor-orange {
-    border: 2px solid #E97E00
+  border: 2px solid #e97e00;
 }
 
 .border-сolor-yellow {
-    border: 2px solid  #E9D100
+  border: 2px solid #e9d100;
 }
 
 .border-сolor-green {
-    border: 2px solid #66E900
+  border: 2px solid #66e900;
 }
 
 .сolor-red {
-    color: #E90000
+  color: #e90000;
 }
 
 .сolor-orange {
-    color: #E97E00
+  color: #e97e00;
 }
 
 .сolor-yellow {
-    color: #E9D100
+  color: #e9d100;
 }
 
 .сolor-green {
-    color: #66E900
+  color: #66e900;
 }

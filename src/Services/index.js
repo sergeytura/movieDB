@@ -1,2 +1,3 @@
-import MovieService from "./MovieService";
-export default MovieService
+import MovieService from './MovieService';
+
+export default MovieService;
