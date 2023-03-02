@@ -26,7 +26,7 @@ export default class MovieService {
   }
 
   createGuestSession() {
-    if (localStorage.sessionId !== '') {
+    if (localStorage.sessionId) {
       this.sessionId = localStorage.sessionId
       return
     }
