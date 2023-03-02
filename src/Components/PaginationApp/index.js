@@ -1,3 +1,3 @@
-import PaginationApp from './PaginationApp';
+import PaginationApp from './PaginationApp'
 
-export default PaginationApp;
+export default PaginationApp

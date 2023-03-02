@@ -1,51 +1,43 @@
 export default class MovieService {
-  _basePoster = 'https://image.tmdb.org/t/p/original';
+  basePoster = 'https://image.tmdb.org/t/p/original'
 
-  _myKey = '?api_key=6db7ab44767f1de8e415a7e1e11f735a';
+  myKey = '?api_key=6db7ab44767f1de8e415a7e1e11f735a'
 
-  _baseURL = 'https://api.themoviedb.org/3';
+  baseURL = 'https://api.themoviedb.org/3'
 
-  _sessionId
+  sessionId
 
   async getResource(url) {
-    try {
-      const res = await fetch(`${this._baseURL}${url}`);
+    const res = await fetch(`${this.baseURL}${url}`)
 
-      if (!res.ok) {
-        throw new Error(`Cant fetch ${url}, received ${res.status}`);
-      }
-      return await res.json();
-    } catch (err) {
-      console.error(err);
+    if (!res.ok) {
+      throw new Error(`Cant fetch ${url}, received ${res.status}`)
     }
+    const result = await res.json()
+    return result
   }
 
   getMovies(movie, page) {
-    return this.getResource(
-      `/search/movie${this._myKey}&language=en-US&query=${movie}&page=${page}&include_adult=false`
-    );
+    return this.getResource(`/search/movie${this.myKey}&language=en-US&query=${movie}&page=${page}&include_adult=false`)
   }
 
   getGenres() {
-    return this.getResource(`/genre/movie/list${this._myKey}&language=en-US`);
+    return this.getResource(`/genre/movie/list${this.myKey}&language=en-US`)
   }
 
   createGuestSession() {
     if (localStorage.sessionId !== '') {
-      return (this._sessionId = localStorage.sessionId);
+      this.sessionId = localStorage.sessionId
+      return
     }
-    console.log('session Guest created!');
-    return this.getResource(`/authentication/guest_session/new${this._myKey}`).then((e) => {
-      localStorage.setItem('sessionId', e.guest_session_id);
-
-      this._sessionId = localStorage.sessionId;
-      console.log(this._sessionId);
+    return this.getResource(`/authentication/guest_session/new${this.myKey}`).then((e) => {
+      localStorage.setItem('sessionId', e.guest_session_id)
+      this.sessionId = localStorage.sessionId
     })
   }
 
   sendRatingMovie(value, idRating) {
-    console.log(this._sessionId);
-    fetch(`${this._baseURL}/movie/${idRating}/rating${this._myKey}&guest_session_id=${this._sessionId}`, {
+    fetch(`${this.baseURL}/movie/${idRating}/rating${this.myKey}&guest_session_id=${this.sessionId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
@@ -53,14 +45,14 @@ export default class MovieService {
       body: JSON.stringify({
         value,
       }),
-    });
+    })
   }
 
   async getRatedMovies() {
     const res = await fetch(
-      `https://api.themoviedb.org/3/guest_session/${this._sessionId}/rated/movies?api_key=6db7ab44767f1de8e415a7e1e11f735a&language=en-US&sort_by=created_at.asc`
-    );
-    return res.json();
+      `https://api.themoviedb.org/3/guest_session/${this.sessionId}/rated/movies?api_key=6db7ab44767f1de8e415a7e1e11f735a&language=en-US&sort_by=created_at.asc`
+    )
+    return res.json()
   }
 
   ratedMovies() {
@@ -77,10 +69,10 @@ export default class MovieService {
           image: `https://image.tmdb.org/t/p/w200${item.poster_path}`,
           stars: item.vote_average.toFixed(1),
           popularity: item.popularity,
-        };
-        return newRatedObj;
+        }
+        return newRatedObj
       })
-    });
+    })
   }
 
   currentMovies(movies, currPage) {
@@ -97,9 +89,9 @@ export default class MovieService {
           image: `https://image.tmdb.org/t/p/w200${item.poster_path}`,
           stars: item.vote_average.toFixed(1),
           popularity: item.popularity,
-        };
-        return newMovieObj;
+        }
+        return newMovieObj
       })
-    });
+    })
   }
 }

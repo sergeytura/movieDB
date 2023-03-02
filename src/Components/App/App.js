@@ -1,18 +1,18 @@
-import React from 'react';
-import lodash from 'lodash';
-import { Tabs } from 'antd';
+import React from 'react'
+import lodash from 'lodash'
+import { Tabs } from 'antd'
 
-import CardList from '../CardList/CardList';
-import MovieService from '../../Services';
-import ErrorIndicator from '../ErrorIndicator';
-import SearchBar from '../SearchBar';
-import PaginationApp from '../PaginationApp';
-import { GenresContext } from '../GenresContext/GenresContext';
+import CardList from '../CardList/CardList'
+import MovieService from '../../Services'
+import ErrorIndicator from '../ErrorIndicator'
+import SearchBar from '../SearchBar'
+import PaginationApp from '../PaginationApp'
+import { GenresContext } from '../GenresContext/GenresContext'
 
-import './App.css';
+import './App.css'
 
 export default class App extends React.Component {
-  movieService = new MovieService();
+  movieService = new MovieService()
 
   state = {
     page: 1,
@@ -22,16 +22,18 @@ export default class App extends React.Component {
     moviesData: [],
     loading: false,
     error: false,
-  };
+  }
+
+  debounce = lodash.debounce(this.updateData, 2000)
 
   componentDidMount() {
     this.setState({
       loading: true,
       error: false,
-    });
+    })
 
-    this.updateGenres();
-    this.movieService.createGuestSession();
+    this.updateGenres()
+    this.movieService.createGuestSession()
 
     this.movieService.ratedMovies().then((rated) =>
       this.setState({
@@ -39,79 +41,45 @@ export default class App extends React.Component {
         loading: false,
         error: false,
       })
-    );
+    )
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { value, page } = this.state;
+    const { value, page } = this.state
     if (value !== prevState.value || page !== prevState.page) {
-      this.debounce(value, page);
+      this.debounce(value, page)
     }
   }
 
-  onChangeInput = (event) => {
-    this.setState({
-      value: event.target.value,
-      page: 1,
-    });
-  }
-
-  debounce = lodash.debounce(this.updateData, 2000);
-
-  currentPage = (event) => {
-    console.log(event);
-    this.setState({
-      page: event,
-    });
+  componentDidCatch() {
+    this.setState({ error: true })
   }
 
   onError = (err) => {
     this.setState({
       error: true,
       loading: false,
-    });
-    return <ErrorIndicator message={err.message} />;
+    })
+    return <ErrorIndicator message={err.message} />
   }
 
-  updateGenres() {
-    this.movieService
-      .getGenres()
-      .then((res) => {
-        this.setState({
-          genresDB: res.genres,
-        });
-      })
-      .catch(this.onError);
-  }
-
-  updateData(searchMovie, currentPage) {
+  onChangeInput = (event) => {
     this.setState({
-      loading: true,
-    });
-
-    this.movieService
-      .currentMovies(searchMovie, currentPage)
-      .then((newMovies) =>
-        this.setState({
-          moviesData: newMovies,
-          loading: false,
-        })
-      )
-      .catch(this.onError);
+      value: event.target.value,
+      page: 1,
+    })
   }
 
   setRating = (value, idRating) => {
-    console.log(value, idRating);
-    this.movieService.sendRatingMovie(value, idRating);
-
+    this.movieService.sendRatingMovie(value, idRating)
     this.setState(({ moviesData }) => {
-      const idx = moviesData.findIndex((el) => el.idRating === idRating);
-      const oldItem = moviesData[idx];
-      const newItem = { ...oldItem, rating: value };
-      const newArr = [...moviesData.slice(0, idx), newItem, ...moviesData.slice(idx + 1)];
+      const idx = moviesData.findIndex((el) => el.idRating === idRating)
+      const oldItem = moviesData[idx]
+      const newItem = { ...oldItem, rating: value }
+      const newArr = [...moviesData.slice(0, idx), newItem, ...moviesData.slice(idx + 1)]
       return {
         moviesData: newArr,
-      };
+      }
     })
     this.movieService
       .ratedMovies()
@@ -121,18 +89,47 @@ export default class App extends React.Component {
           loading: false,
         })
       )
-      .catch(this.onError);
+      .catch(this.onError)
   }
 
-  componentDidCatch() {
-    this.setState({ error: true });
+  currentPage = (event) => {
+    this.setState({
+      page: event,
+    })
+  }
+
+  updateData(searchMovie, currentPage) {
+    this.setState({
+      loading: true,
+    })
+
+    this.movieService
+      .currentMovies(searchMovie, currentPage)
+      .then((newMovies) =>
+        this.setState({
+          moviesData: newMovies,
+          loading: false,
+        })
+      )
+      .catch(this.onError)
+  }
+
+  updateGenres() {
+    this.movieService
+      .getGenres()
+      .then((res) => {
+        this.setState({
+          genresDB: res.genres,
+        })
+      })
+      .catch(this.onError)
   }
 
   render() {
-    const { loading, moviesData, moviesRatedData, error, genresDB, page } = this.state;
-    const errorMessage = error ? <ErrorIndicator /> : null;
+    const { loading, moviesData, moviesRatedData, error, genresDB, page } = this.state
+    const errorMessage = error ? <ErrorIndicator /> : null
     const paginatonOn =
-      this.state.moviesData.length > 0 ? <PaginationApp currentPage={this.currentPage} page={page} /> : null;
+      this.state.moviesData.length > 0 ? <PaginationApp currentPage={this.currentPage} page={page} /> : null
     const items = [
       {
         key: '1',
@@ -159,15 +156,15 @@ export default class App extends React.Component {
           </GenresContext.Provider>
         ),
       },
-    ];
+    ]
     const content = !error ? (
       <Tabs onTabClick={() => this.updateRatedData} defaultActiveKey="1" centered items={items} />
-    ) : null;
+    ) : null
     return (
       <div className="app">
         {content}
         {errorMessage}
       </div>
-    );
+    )
   }
 }

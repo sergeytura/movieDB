@@ -31,6 +31,7 @@
       "class-methods-use-this": 0,
       "no-param-reassign": [2, {"props": false}],
       "consistent-return": 0,
+      "import/prefer-default-export": "off",
       "no-unused-expressions": 0,
       "no-plusplus": 0,
       "indent": ["error", 2],
