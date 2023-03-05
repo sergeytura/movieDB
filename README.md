@@ -1,1 +1,1 @@
-https://movie-8s7xlcz3h-sergeytura.vercel.app/
+https://movie-mrgb5em4d-sergeytura.vercel.app/
