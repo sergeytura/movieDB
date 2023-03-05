@@ -22,7 +22,7 @@
 }
 
 .card__info {
-  margin: 20px;
+  margin: 20px 20px 20px 20px;
   font-family: 'Inter';
   font-size: 12px;
   line-height: 22px;
@@ -111,4 +111,46 @@
 
 .сolor-green {
   color: #66e900;
+}
+
+@media screen and (min-width: 320px) and (max-width: 767px) {
+  .card {
+    width: 387px !important;
+    height: 245px;
+    /* -webkit-line-clamp: 3; */
+  }
+  .card__img > img {
+    display: flex;
+    width: 60px;
+
+    height: 91px;
+  }
+  .card__info {
+    margin: 10px 10px 10px 0px !important;
+  }
+  .card__overview {
+    position: absolute;
+    margin-right: 10px;
+    left: 10px;
+  }
+  .card__img {
+    display: flex;
+    margin: 10px;
+    width: 60px;
+    height: 91px;
+  }
+  .card__title {
+    margin-bottom: 9px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+  .card__release-date {
+    margin-bottom: 9px;
+  }
+  .card__rating {
+    translate: 80px;
+  }
 }
