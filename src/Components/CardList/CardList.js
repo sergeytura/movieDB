@@ -4,10 +4,24 @@ import Card from '../Card/Card'
 
 import './CardList.css'
 
-function CardList({ loading, error, movieData, setRating }) {
+function CardList({ loading, error, movieData, moviesRatedData, setRating }) {
   const elements = movieData.map((item) => {
-    const { id, ...movieProps } = item
-    return <Card key={id} {...movieProps} loading={loading} error={error} setRating={setRating} />
+    const { id, rating, ...movieProps } = item
+    let userRating
+    if (rating === 0) {
+      const check = moviesRatedData.find((el) => el.id === id)
+      check ? (userRating = check.rating) : null
+    }
+    return (
+      <Card
+        key={id}
+        {...movieProps}
+        userRating={rating || userRating}
+        loading={loading}
+        error={error}
+        setRating={setRating}
+      />
+    )
   })
   return <ul className="card-list">{elements}</ul>
 }

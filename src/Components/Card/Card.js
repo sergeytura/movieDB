@@ -15,8 +15,14 @@ export default class Card extends React.Component {
     imgLoading: true,
   }
 
+  // componentDidUpdate (prevProps, prevState) {
+  //   if(this.props.stars !== prevProps.stars) {
+  //     this.props.setRating(this.props.value, this.props.idRating)
+  //   }
+  // }
+
   render() {
-    const { idRating, rating, error, setRating, header, movieDate, genres, overview, image, stars } = this.props
+    const { idRating, error, setRating, header, movieDate, genres, overview, image, stars, userRating } = this.props
     const { imgLoading } = this.state
     const sourceIMG = image === 'https://image.tmdb.org/t/p/w200null' ? icon : image
 
@@ -27,10 +33,10 @@ export default class Card extends React.Component {
     if (stars >= 7) ClassNameStars += ' border-сolor-green'
 
     let colorRatedStars
-    if (rating >= 0 && rating < 3) colorRatedStars = 'сolor-green'
-    if (rating >= 3 && rating < 5) colorRatedStars = 'сolor-orange'
-    if (rating >= 5 && rating < 7) colorRatedStars = 'сolor-yellow'
-    if (rating >= 7) colorRatedStars = 'сolor-green'
+    if (userRating >= 0 && userRating < 3) colorRatedStars = 'сolor-green'
+    if (userRating >= 3 && userRating < 5) colorRatedStars = 'сolor-orange'
+    if (userRating >= 5 && userRating < 7) colorRatedStars = 'сolor-yellow'
+    if (userRating >= 7) colorRatedStars = 'сolor-green'
 
     if (imgLoading) {
       const img = new Image()
@@ -60,7 +66,7 @@ export default class Card extends React.Component {
           <div className="card__rating">
             <Rate
               className={colorRatedStars}
-              value={rating}
+              value={userRating}
               onChange={(value) => setRating(value, idRating)}
               style={{
                 fontSize: '14px',
