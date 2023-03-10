@@ -17,9 +17,7 @@ export default class App extends React.Component {
     page: 1,
     pageRate: 1,
     value: '',
-    // totalPages: 1,
     totalResults: 20,
-    // totalPagesRate: 1,
     totalResultsRate: 20,
     genresDB: [],
     moviesRatedData: [],
@@ -72,7 +70,7 @@ export default class App extends React.Component {
             loading: false,
           })
         })
-        .catch(this.onError)
+        .catch((err) => this.onError(err))
     }
     if (pageRate !== prevState.pageRate) {
       this.movieService
@@ -88,7 +86,7 @@ export default class App extends React.Component {
             loading: false,
           })
         })
-        .catch(this.onError)
+        .catch((err) => this.onError(err))
     }
   }
 
@@ -96,11 +94,12 @@ export default class App extends React.Component {
     this.setState({ error: true })
   }
 
-  onError = () => {
+  onError = (err) => {
     this.setState({
       error: true,
       loading: false,
     })
+    return <ErrorIndicator message={err.message} />
   }
 
   onChangeInput = (event) => {
@@ -109,19 +108,6 @@ export default class App extends React.Component {
       page: 1,
     })
   }
-
-  // setRating = (value, idRating) => {
-  //    this.movieService.sendRatingMovie(value, idRating)
-  //   this.setState(({ moviesData }) => {
-  //     const saved = moviesData.map((todo) => {
-  //       if (todo.idRating !== idRating) return todo
-  //       return {
-  //         ...todo,
-  //         rating: value
-  //       }
-  //     })
-  //     return saved
-  //   })
 
   setRating = (value, idRating) => {
     this.movieService.sendRatingMovie(value, idRating)
@@ -145,7 +131,7 @@ export default class App extends React.Component {
           loading: false,
         })
       )
-      .catch(this.onError)
+      .catch((err) => this.onError(err))
   }
 
   currentPage = (event) => {
@@ -170,7 +156,6 @@ export default class App extends React.Component {
       .then((newMovies) => {
         newMovies.find((el) => {
           return this.setState({
-            // totalPages: el.totalPages,
             totalResults: el.totalResults,
           })
         })
@@ -179,7 +164,7 @@ export default class App extends React.Component {
           loading: false,
         })
       })
-      .catch(this.onError)
+      .catch((err) => this.onError(err))
   }
 
   updateGenres() {
@@ -190,7 +175,7 @@ export default class App extends React.Component {
           genresDB: res.genres,
         })
       })
-      .catch(this.onError)
+      .catch((err) => this.onError(err))
   }
 
   render() {

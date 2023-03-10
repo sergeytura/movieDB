@@ -27,14 +27,18 @@ export default class MovieService {
   }
 
   createGuestSession() {
-    if (localStorage.sessionId) {
-      this.sessionId = localStorage.sessionId
-      return
+    try {
+      if (localStorage.sessionId) {
+        this.sessionId = localStorage.sessionId
+        return
+      }
+      return this.getResource(`/authentication/guest_session/new${this.myKey}`).then((e) => {
+        localStorage.setItem('sessionId', e.guest_session_id)
+        this.sessionId = localStorage.sessionId
+      })
+    } catch (err) {
+      throw new Error('Cant create guest session', err)
     }
-    return this.getResource(`/authentication/guest_session/new${this.myKey}`).then((e) => {
-      localStorage.setItem('sessionId', e.guest_session_id)
-      this.sessionId = localStorage.sessionId
-    })
   }
 
   async sendRatingMovie(stars, idRating) {
