@@ -19,26 +19,37 @@ export default class MovieService {
   }
 
   getMovies(movie, page) {
+    try {
+    
     return this.getResource(`/search/movie${this.myKey}&language=en-US&query=${movie}&page=${page}&include_adult=false`)
+    } catch (err) {
+      throw new Error(err)
+    }
   }
 
   getGenres() {
-    return this.getResource(`/genre/movie/list${this.myKey}&language=en-US`)
+    try {
+      return this.getResource(`/genre/movie/list${this.myKey}&language=en-US`)
+    } catch (err) {
+      throw new Error(err)
+    }
+    
   }
 
   createGuestSession() {
-    try {
+   
       if (localStorage.sessionId) {
         this.sessionId = localStorage.sessionId
         return
       }
-      return this.getResource(`/authentication/guest_session/new${this.myKey}`).then((e) => {
+      return this.getResource(`/authentication/guest_session/new${this.myKey}`)
+      .then((e) => {
         localStorage.setItem('sessionId', e.guest_session_id)
         this.sessionId = localStorage.sessionId
       })
-    } catch (err) {
-      throw new Error('Cant create guest session', err)
-    }
+      .catch ((err) => {
+        throw new Error(err)
+      })
   }
 
   async sendRatingMovie(stars, idRating) {
@@ -53,7 +64,7 @@ export default class MovieService {
         }),
       })
     } catch (err) {
-      throw new Error('cant send Rating for movie', err)
+      throw new Error(err)
     }
   }
 
@@ -63,13 +74,12 @@ export default class MovieService {
         `https://api.themoviedb.org/3/guest_session/${this.sessionId}/rated/movies?api_key=6db7ab44767f1de8e415a7e1e11f735a&language=en-US&sort_by=created_at.asc&page=${page}`
       )
       return await res.json()
-    } catch (err) {
-      throw new Error('cant fetch rated movies', err)
+    } catch (error) {
+      throw new Error(error)
     }
   }
 
   ratedMovies(page) {
-    try {
       return this.getRatedMovies(page).then((res) => {
         const tResults = res.total_results
         return res.results.map((item) => {
@@ -89,14 +99,15 @@ export default class MovieService {
           return newRatedObj
         })
       })
-    } catch (err) {
-      throw new Error('cant fetch rated movies list', err)
-    }
+    .catch((err) => {
+      throw new Error(err)
+    })
   }
 
   currentMovies(movies, currPage) {
-    try {
-      return this.getMovies(movies, currPage).then((res) => {
+
+      return this.getMovies(movies, currPage)
+      .then((res) => {
         // let tPages = res.total_pages
         const tResults = res.total_results
         return res.results.map((item) => {
@@ -118,8 +129,8 @@ export default class MovieService {
           return newMovieObj
         })
       })
-    } catch (err) {
-      throw new Error('cant fetch movies list', err)
-    }
+    .catch ((err) => {
+      throw new Error(err)
+    })
   }
 }

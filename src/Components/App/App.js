@@ -49,6 +49,7 @@ export default class App extends React.Component {
         error: false,
       })
     })
+    .catch((err) => this.onError(err))
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -110,18 +111,23 @@ export default class App extends React.Component {
   }
 
   setRating = (value, idRating) => {
-    this.movieService.sendRatingMovie(value, idRating)
-    if (this.state.moviesData.length > 0) {
-      this.setState(({ moviesData }) => {
-        const idx = moviesData.findIndex((el) => el.idRating === idRating)
-        const oldItem = moviesData[idx]
-        const newItem = { ...oldItem, rating: value }
-        const newArr = [...moviesData.slice(0, idx), newItem, ...moviesData.slice(idx + 1)]
-        return {
-          moviesData: newArr,
-        }
-      })
+    try {
+      this.movieService.sendRatingMovie(value, idRating)
+      if (this.state.moviesData.length > 0) {
+        this.setState(({ moviesData }) => {
+          const idx = moviesData.findIndex((el) => el.idRating === idRating)
+          const oldItem = moviesData[idx]
+          const newItem = { ...oldItem, rating: value }
+          const newArr = [...moviesData.slice(0, idx), newItem, ...moviesData.slice(idx + 1)]
+          return {
+            moviesData: newArr,
+          }
+        })
+      }
+    } catch (err) {
+      this.onError(err)
     }
+    
 
     this.movieService
       .ratedMovies(this.state.pageRate)
