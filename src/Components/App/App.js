@@ -37,19 +37,21 @@ export default class App extends React.Component {
     this.updateGenres()
     this.movieService.createGuestSession()
 
-    this.movieService.ratedMovies().then((rated) => {
-      rated.find((el) => {
-        return this.setState({
-          totalResultsRate: el.totalResults,
+    this.movieService
+      .ratedMovies()
+      .then((rated) => {
+        rated.find((el) => {
+          return this.setState({
+            totalResultsRate: el.totalResults,
+          })
+        })
+        this.setState({
+          moviesRatedData: rated,
+          loading: false,
+          error: false,
         })
       })
-      this.setState({
-        moviesRatedData: rated,
-        loading: false,
-        error: false,
-      })
-    })
-    .catch((err) => this.onError(err))
+      .catch((err) => this.onError(err))
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -127,7 +129,6 @@ export default class App extends React.Component {
     } catch (err) {
       this.onError(err)
     }
-    
 
     this.movieService
       .ratedMovies(this.state.pageRate)

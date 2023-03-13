@@ -20,8 +20,9 @@ export default class MovieService {
 
   getMovies(movie, page) {
     try {
-    
-    return this.getResource(`/search/movie${this.myKey}&language=en-US&query=${movie}&page=${page}&include_adult=false`)
+      return this.getResource(
+        `/search/movie${this.myKey}&language=en-US&query=${movie}&page=${page}&include_adult=false`
+      )
     } catch (err) {
       throw new Error(err)
     }
@@ -33,21 +34,19 @@ export default class MovieService {
     } catch (err) {
       throw new Error(err)
     }
-    
   }
 
   createGuestSession() {
-   
-      if (localStorage.sessionId) {
-        this.sessionId = localStorage.sessionId
-        return
-      }
-      return this.getResource(`/authentication/guest_session/new${this.myKey}`)
+    if (localStorage.sessionId) {
+      this.sessionId = localStorage.sessionId
+      return
+    }
+    return this.getResource(`/authentication/guest_session/new${this.myKey}`)
       .then((e) => {
         localStorage.setItem('sessionId', e.guest_session_id)
         this.sessionId = localStorage.sessionId
       })
-      .catch ((err) => {
+      .catch((err) => {
         throw new Error(err)
       })
   }
@@ -80,7 +79,8 @@ export default class MovieService {
   }
 
   ratedMovies(page) {
-      return this.getRatedMovies(page).then((res) => {
+    return this.getRatedMovies(page)
+      .then((res) => {
         const tResults = res.total_results
         return res.results.map((item) => {
           const newRatedObj = {
@@ -99,14 +99,13 @@ export default class MovieService {
           return newRatedObj
         })
       })
-    .catch((err) => {
-      throw new Error(err)
-    })
+      .catch((err) => {
+        throw new Error(err)
+      })
   }
 
   currentMovies(movies, currPage) {
-
-      return this.getMovies(movies, currPage)
+    return this.getMovies(movies, currPage)
       .then((res) => {
         // let tPages = res.total_pages
         const tResults = res.total_results
@@ -129,8 +128,8 @@ export default class MovieService {
           return newMovieObj
         })
       })
-    .catch ((err) => {
-      throw new Error(err)
-    })
+      .catch((err) => {
+        throw new Error(err)
+      })
   }
 }
