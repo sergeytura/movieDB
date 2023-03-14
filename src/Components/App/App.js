@@ -35,8 +35,12 @@ export default class App extends React.Component {
       error: false,
     })
 
-    this.updateGenres()
-    this.movieService.createGuestSession()
+    try {
+      this.updateGenres()
+      this.movieService.createGuestSession()
+    } catch (err) {
+      this.onError(err)
+    }
 
     this.movieService
       .ratedMovies()
@@ -58,7 +62,11 @@ export default class App extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     const { value, page, moviesData, pageRate } = this.state
     if (value !== prevState.value || page !== prevState.page) {
-      this.debounce(value, page)
+      try {
+        this.debounce(value, page)
+      } catch (err) {
+        this.onError(err)
+      }
     }
     if (moviesData !== prevState.moviesData) {
       this.movieService
