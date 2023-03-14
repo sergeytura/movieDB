@@ -24,6 +24,7 @@ export default class App extends React.Component {
     moviesData: [],
     loading: false,
     error: false,
+    errorObj: '',
   }
 
   debounce = lodash.debounce(this.updateData, 2000)
@@ -99,10 +100,10 @@ export default class App extends React.Component {
 
   onError = (err) => {
     this.setState({
+      errorObj: err,
       error: true,
       loading: false,
     })
-    return <ErrorIndicator message={err.message} />
   }
 
   onChangeInput = (event) => {
@@ -186,8 +187,8 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { loading, moviesData, moviesRatedData, error, genresDB, page } = this.state
-    const errorMessage = error ? <ErrorIndicator /> : null
+    const { loading, moviesData, moviesRatedData, error, genresDB, page, errorObj } = this.state
+    const errorMessage = error ? <ErrorIndicator errorObj={errorObj} /> : null
     const items = [
       {
         key: '1',

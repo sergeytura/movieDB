@@ -2,8 +2,9 @@ import React from 'react'
 import { Alert, Space } from 'antd'
 import './ErrorIndicator.css'
 
-export default function ErrorIndicator({ message }) {
+export default function ErrorIndicator({ errorObj }) {
   const vpnErr = 'Are you from Russia!? Use Psiphon 3 - its free and fast'
+  const text = errorObj ? errorObj.message : vpnErr
   return (
     <div className="error-message">
       <Space
@@ -11,7 +12,7 @@ export default function ErrorIndicator({ message }) {
           width: '100%',
         }}
       >
-        <Alert message={message || vpnErr} type="error" showIcon />
+        <Alert message={text} type="error" showIcon />
       </Space>
     </div>
   )
